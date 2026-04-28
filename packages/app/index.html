@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Conway's Game of Life</title>
+    <!-- Barebones styles just to see the grid -->
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+      .grid {
+        display: grid;
+        gap: 1px;
+        background-color: #ccc;
+        border: 1px solid #ccc;
+        width: max-content;
+      }
+      .cell {
+        width: 20px;
+        height: 20px;
+        background-color: white;
+        cursor: pointer;
+      }
+      .cell.alive {
+        background-color: black;
+      }
+      .controls {
+        margin-bottom: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Conway's Game of Life</h1>
+    <div class="controls">
+      <button id="btn-play">Play</button>
+      <button id="btn-pause" disabled>Pause</button>
+      <button id="btn-tick">Tick</button>
+      <button id="btn-clear">Clear</button>
+    </div>
+    <div id="grid-container" class="grid"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

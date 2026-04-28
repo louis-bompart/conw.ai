@@ -1,0 +1,9 @@
+{
+  "name": "conw-ai-monorepo",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm -C packages/app run dev",
+    "build": "pnpm -C packages/app run build",
+    "preview": "pnpm -C packages/app run preview"
+  }
+}
