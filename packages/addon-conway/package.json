@@ -1,0 +1,32 @@
+{
+  "name": "@conwai/addon-conway",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./manager": "./dist/manager.js"
+  },
+  "scripts": {
+    "build": "tsup src/manager.tsx --platform browser --target esnext --format esm --external react,@storybook/icons"
+  },
+  "dependencies": {
+    "react": "*",
+    "storybook": "^10.3.5"
+  },
+  "devDependencies": {
+    "tsup": "^8.5.1",
+    "@types/react": "^18.2.0",
+    "typescript": "^5.0.0"
+  },
+  "bundler": {
+    "exportEntries": [
+      "src/index.ts"
+    ],
+    "managerEntries": [
+      "src/manager.ts"
+    ],
+    "previewEntries": [
+      "src/preview.ts"
+    ]
+  }
+}

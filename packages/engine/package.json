@@ -1,0 +1,11 @@
+{
+  "name": "@conwai/engine",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {},
+  "dependencies": {
+    "zustand": "^5.0.12"
+  }
+}
