@@ -18,6 +18,8 @@ jobs:
           node-version-file: .nvmrc
       - name: Install dependencies
         run: pnpm i
+      - name: Build
+        run: pnpm turbo build
       - name: Run Chromatic
         uses: chromaui/action@latest
         with:
