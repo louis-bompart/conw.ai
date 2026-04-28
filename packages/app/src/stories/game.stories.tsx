@@ -26,9 +26,7 @@ const meta = preview.type<{ args: CustomArgs & { [key in Exclude<string, keyof C
     argTypes: {
         width: { name: 'Grid width', control: 'number', description: 'Width of the grid' },
         height: { name: 'Grid height', control: 'number', description: 'Height of the grid' },
-        initialState: { name: 'Initial state', control: 'text', description: 'Initial state of the grid' },
-        currentState: { control: 'text', name: 'Current state', table: { readOnly: true } },
-        engine: { control: 'object', table: { disable: true } }
+        initialState: { name: 'Initial state', table: { disable: true } },
     },
     args: {
         width: 30,
