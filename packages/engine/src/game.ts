@@ -3,14 +3,20 @@ export class GameOfLife {
   height: number;
   grid: boolean[][];
 
-  constructor(width: number, height: number) {
+  constructor(width: number, height: number, initialState: string = "") {
     this.width = width;
     this.height = height;
-    this.grid = this.createGrid();
+    if (initialState) {
+      const decompressed = decompressFromSafeString(initialState);
+      this.grid = this.createGrid(decompressed);
+    } else {
+      this.grid = this.createGrid();
+    }
   }
 
-  createGrid(): boolean[][] {
-    return Array.from({ length: this.height }, () => new Array(this.width).fill(false));
+  createGrid(initialState: boolean[] = []): boolean[][] {
+    const arr = Array.from(initialState).reverse();
+    return Array.from({ length: this.height }, () => Array.from({ length: this.width }, () => arr.pop()));
   }
 
   toggleCell(x: number, y: number): void {
@@ -73,7 +79,48 @@ export class GameOfLife {
     this.grid = newGrid;
   }
 
+  toBitString(): string {
+    return this.grid.map(row => row.map(cell => cell ? '1' : '0').join('')).join('');
+  }
+
+  toString(): string {
+    return compressToSafeString(this.toBitString());
+  }
+
   clear(): void {
     this.grid = this.createGrid();
   }
+}
+
+function compressToSafeString(binaryStr: string) {
+  // 1. Pack the bits into an array of bytes
+  const bytes = new Uint8Array(Math.ceil(binaryStr.length / 8));
+  for (let i = 0; i < binaryStr.length; i++) {
+    if (binaryStr[i] === '1') bytes[Math.floor(i / 8)] |= (1 << (7 - (i % 8)));
+  }
+
+  // 2. Convert the byte array into a Base64 string
+  const binString = Array.from(bytes, (byte) => String.fromCharCode(byte)).join("");
+
+  // 3. Return the Base64 string + the original length (needed for accurate decompression)
+  return btoa(binString) + "-" + binaryStr.length;
+}
+
+function decompressFromSafeString(compressedStr: string) {
+  // 1. Split the Base64 string from the original length
+  const [base64, lengthStr] = compressedStr.split('-');
+  const originalLength = parseInt(lengthStr, 10);
+
+  // 2. Decode Base64 back into raw bytes
+  const binString = atob(base64);
+
+  // 3. Unpack the bits back into 1s and 0s
+  let result: boolean[] = [];
+  for (let i = 0; i < originalLength; i++) {
+    const byteIndex = Math.floor(i / 8);
+    const bit = Boolean(binString.charCodeAt(byteIndex) & (1 << (7 - (i % 8))));
+    result.push(bit);
+  }
+
+  return result;
 }

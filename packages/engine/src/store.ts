@@ -20,8 +20,8 @@ export interface ConwayActions {
 
 type _ConwayStore = ConwayState & ConwayActions;
 
-export const createConwayStore = (cols: number = 30, rows: number = 20) => {
-  const game = new GameOfLife(cols, rows);
+export const createConwayStore = (cols: number = 30, rows: number = 20, initialState: string = "") => {
+  const game = new GameOfLife(cols, rows, initialState);
 
   return createStore<_ConwayStore>((set, get) => ({
     game,

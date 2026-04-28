@@ -11,20 +11,33 @@ const EVENTS = {
     PAUSE: `${ADDON_ID}/pause`,
     TICK: `${ADDON_ID}/tick`,
     CLEAR: `${ADDON_ID}/clear`,
+    SAVE_REQUEST: `${ADDON_ID}/save-request`,
+    SAVE: `${ADDON_ID}/save`,
 };
 
-const meta = preview.meta({
-    title: 'The Game of Life',
-});
+type CustomArgs = {
+    width: number
+    height: number
+    initialState: string
+}
 
-export const Default = meta.story({
-    name: 'Blank Canvas',
+const meta = preview.type<{ args: CustomArgs & { [key in Exclude<string, keyof CustomArgs>]: never } }>().meta({
+    title: 'The Game of Life',
+    argTypes: {
+        width: { name: 'Grid width', control: 'number', description: 'Width of the grid' },
+        height: { name: 'Grid height', control: 'number', description: 'Height of the grid' },
+        initialState: { name: 'Initial state', table: { disable: true } },
+    },
+    args: {
+        width: 30,
+        height: 20,
+        initialState: ''
+    },
     render: () => html`
         <conway-grid></conway-grid>
         `,
-    play: ({ canvasElement }) => {
-        const engine = createConwayStore(30, 20);
-
+    play: ({ canvasElement, args }) => {
+        const engine = createConwayStore(args.width, args.height, args.initialState);
         const gridElement = canvasElement.querySelector('conway-grid') as any;
         if (!gridElement) throw new Error('Grid element not found');
         gridElement.engine = engine;
@@ -40,7 +53,23 @@ export const Default = meta.story({
         channel.on(EVENTS.PAUSE, () => engine.getState().pause());
         channel.on(EVENTS.TICK, () => engine.getState().tick());
         channel.on(EVENTS.CLEAR, () => engine.getState().clear());
+        channel.on(EVENTS.SAVE_REQUEST, () => {
+            channel.emit(EVENTS.SAVE, engine.getState().game.toString());
+        });
 
         return gridElement;
+    }
+});
+
+export const Default = meta.story({
+    name: 'Blank Canvas'
+});
+
+export const PulsarPeriod3 = meta.story({
+    name: 'Pulsar Period 3',
+    args: {
+        width: 50,
+        height: 50,
+        initialState: 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADjgAAAAAAAAAAAAAAhQgAAAAAIUIAAAAACFCAAAAAAOOAAAAAAAAAAAAAAA44AAAAAAhQgAAAAAIUIAAAAACFCAAAAAAAAAAAAAADjgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==-2500'
     }
 });

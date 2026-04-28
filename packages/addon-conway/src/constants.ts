@@ -5,4 +5,6 @@ export const EVENTS = {
   PAUSE: `${ADDON_ID}/pause`,
   TICK: `${ADDON_ID}/tick`,
   CLEAR: `${ADDON_ID}/clear`,
+  SAVE: `${ADDON_ID}/save`,
+  SAVE_REQUEST: `${ADDON_ID}/save-request`,
 };
