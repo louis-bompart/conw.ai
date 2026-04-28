@@ -14,10 +14,11 @@ const EVENTS = {
 };
 
 const meta = preview.meta({
-    title: 'GameOfLife/LitGrid',
+    title: 'The Game of Life',
 });
 
 export const Default = meta.story({
+    name: 'Blank Canvas',
     render: () => html`
         <conway-grid></conway-grid>
         `,

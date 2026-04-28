@@ -11,5 +11,6 @@ export default defineMain({
     // "@storybook/addon-docs",
     import.meta.resolve('./local-preset.ts')
   ],
+
   framework: "@storybook/web-components-vite"
 });
