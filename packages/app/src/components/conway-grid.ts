@@ -6,7 +6,6 @@ import { repeat } from 'lit/directives/repeat.js';
 @customElement('conway-grid')
 export class ConwayGrid extends LitElement {
 
-
   @state()
   engine: ConwayStore;
 
@@ -78,5 +77,11 @@ export class ConwayGrid extends LitElement {
       })}
       </div>
     `;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'conway-grid': ConwayGrid;
   }
 }

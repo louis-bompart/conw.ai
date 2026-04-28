@@ -8,9 +8,6 @@ export default definePreview({
       // 'off' - skip a11y checks entirely
       test: 'todo'
     },
-    controls: {
-      disable: true
-    },
     actions: {
       disable: true
     },

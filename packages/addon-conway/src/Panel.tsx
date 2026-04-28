@@ -1,17 +1,27 @@
-import React, { Fragment, memo } from 'react';
-import { AddonPanel, TabsState, Button } from 'storybook/internal/components';
+import React, { memo } from 'react';
+import { AddonPanel, Button } from 'storybook/internal/components';
 import { useTheme } from 'storybook/theming';
 import { EVENTS } from './constants';
-import { useChannel } from 'storybook/manager-api';
+import { useChannel, useStorybookApi } from 'storybook/manager-api';
 
 interface PanelProps {
   active?: boolean;
 }
-
 export const Panel: React.FC<PanelProps> = memo(function MyPanel(props: PanelProps) {
   const theme = useTheme();
-  const emit = useChannel({});
-
+  const api = useStorybookApi()
+  const emit = useChannel({
+    [EVENTS.SAVE]: (payload: string) => {
+      navigator.clipboard.writeText(payload);
+      api.addNotification({
+        id: 'conway-save',
+        content: {
+          headline: 'Simulation state saved',
+          subHeadline: 'Grid has been copied to the clipboard.',
+        },
+      })
+    },
+  });
   return (
     <AddonPanel active={props.active ?? false}>
       <div>
@@ -19,31 +29,8 @@ export const Panel: React.FC<PanelProps> = memo(function MyPanel(props: PanelPro
         <Button onClick={() => emit(EVENTS.PAUSE)}>Pause</Button>
         <Button onClick={() => emit(EVENTS.TICK)}>Tick</Button>
         <Button onClick={() => emit(EVENTS.CLEAR)}>Clear</Button>
+        <Button onClick={() => emit(EVENTS.SAVE_REQUEST)}>Save</Button>
       </div>
     </AddonPanel>
   );
 });
-
-
-// import { useChannel } from 'storybook/manager-api';
-// import { EVENTS } from './constants';
-// import { styled } from 'storybook/theming';
-
-// const Container = styled.div({
-//   padding: '16px',
-//   display: 'flex',
-//   gap: '8px',
-// });
-
-// export const Panel = (props: any) => {
-//   const emit = useChannel({});
-
-//   return (
-//     <Container>
-//       <button onClick={() => emit(EVENTS.PLAY)}>Play</button>
-//       <button onClick={() => emit(EVENTS.PAUSE)}>Pause</button>
-//       <button onClick={() => emit(EVENTS.TICK)}>Tick</button>
-//       <button onClick={() => emit(EVENTS.CLEAR)}>Clear</button>
-//     </Container>
-//   );
-// };
