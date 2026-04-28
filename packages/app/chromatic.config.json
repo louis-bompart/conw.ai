@@ -1,0 +1,8 @@
+{
+    "$schema": "https://www.chromatic.com/config-file.schema.json",
+    "projectId": "Project:69f052b774ffd90419abcfa8",
+    "buildCommand": "pnpm turbo build",
+    "autoAcceptChanges": "main",
+    "exitOnceUploaded": true,
+    "onlyChanged": true
+}
